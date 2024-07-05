@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
     joined: {
         type: Date,
         default: Date.now()
+    },
+    profileImg:{
+        type:String,
+        default:"https://cdn-icons-png.flaticon.com/512/149/149071.png"
     }
 
 });
