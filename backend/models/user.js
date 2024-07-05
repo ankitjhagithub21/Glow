@@ -28,10 +28,26 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
+    bio:{
+        type:String,
+        default:""
+    },
     profileImg:{
         type:String,
         default:"https://cdn-icons-png.flaticon.com/512/149/149071.png"
-    }
+    },
+    following:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"User"
+        }
+    ],
+    followers:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"User"
+        }
+    ]
 
 });
 

@@ -21,7 +21,7 @@ body {
     height: 25px;
     border-radius: 50%;
    border: 3px solid white;
-   border-top: 3px solid blue;
+   border-top: 3px solid rgb(36, 33, 33);
    animation: spin 0.8s infinite linear; 
 }
 

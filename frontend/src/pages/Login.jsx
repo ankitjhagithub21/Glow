@@ -59,6 +59,8 @@ const Login = () => {
       
     }
     const handleClick = () =>{
+      setUserData(initialData)
+      setLoading(false)
       if(page==="Login"){
         dispatch(setPage("Register"))
       }else{
