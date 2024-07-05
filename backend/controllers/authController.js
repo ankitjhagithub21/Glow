@@ -62,9 +62,11 @@ const register = async (req, res) => {
         }
          
         
-          
-        // Respond with success
-        res.status(201).json({ success: true, message: "Account created successfully.",user });
+        const userWithoutPassword = user.toObject();
+        delete userWithoutPassword.password;
+
+        
+        res.status(201).json({ success: true, message: "Account created successfully.",user:userWithoutPassword });
 
     } catch (error) {
         console.error("Error during registration:", error);
@@ -77,20 +79,21 @@ const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        if(!email || !password){
-            return res.status(400).json({ success: false, message: "All fields are required." })
+        if (!email || !password) {
+            return res.status(400).json({ success: false, message: "All fields are required." });
         }
 
-        const user = await User.findOne({ email })
+        const user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({ success: false, message: "Wrong email or password." });
         }
 
-        const comparePassword = await bcrypt.compare(password, user.password)
+        const comparePassword = await bcrypt.compare(password, user.password);
         if (!comparePassword) {
             return res.status(400).json({ success: false, message: "Wrong email or password." });
         }
-        const token = generateToken(user._id)
+
+        const token = generateToken(user._id);
 
         if (token) {
             res.cookie('jwt', token, {
@@ -101,16 +104,18 @@ const login = async (req, res) => {
             });
         }
 
-        
-        
+        // Convert user document to a plain object and remove the password field
+        const userWithoutPassword = user.toObject();
+        delete userWithoutPassword.password;
+
         // Respond with success
-        res.status(200).json({ success: true, message: "Login successfull.",user});
+        res.status(200).json({ success: true, message: "Login successful.", user: userWithoutPassword });
 
     } catch (error) {
-       
-        res.status(500).json({ success: false, message: "Internal server error." })
+        res.status(500).json({ success: false, message: "Internal server error." });
     }
-}
+};
+
 
 const logout = async (req, res) => {
     try {

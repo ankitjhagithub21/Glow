@@ -59,6 +59,9 @@ const Login = () => {
       
     }
     const handleClick = () =>{
+      if(loading){
+        return toast.error("Please wait.")
+      }
       setUserData(initialData)
       setLoading(false)
       if(page==="Login"){
