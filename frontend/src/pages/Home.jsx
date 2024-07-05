@@ -1,12 +1,19 @@
 import React from 'react'
+import Left from '../components/Left'
+import Center from '../components/Center'
+import Right from '../components/Right'
 
 
 
 const Home = () => {
+ 
+ 
   return (
-    <div>
+    <div className='container mx-auto flex h-screen'>
      
-      Home page
+     <Left/>
+     <Center/>
+     <Right/>
     </div>
   )
 }
