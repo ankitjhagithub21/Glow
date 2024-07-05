@@ -15,3 +15,20 @@ body {
 .my-shadow{
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 }
+
+.small-loader{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+   border: 3px solid white;
+   border-top: 3px solid blue;
+   animation: spin 0.8s infinite linear; 
+}
+
+@keyframes spin{
+    0%{
+        transform:rotate(0deg) ;
+    }100%{
+        transform: rotate(360deg);
+    }
+}

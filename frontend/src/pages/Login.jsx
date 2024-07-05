@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { FaRegEye,FaRegEyeSlash } from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
-import { setPage } from '../redux/slices/authSlice';
+import { setPage, setUser } from '../redux/slices/authSlice';
+import toast from 'react-hot-toast';
 const Login = () => {
   const {page} = useSelector((state)=>state.auth)
   
@@ -12,9 +13,9 @@ const Login = () => {
     password:""
   }
   const dispatch = useDispatch()
-
   const [showPassword,setShowPassword] = useState(false)
   const [userData,setUserData] = useState(initialData)
+  const [loading,setLoading] = useState(false)
   const handleChange = (e) =>{
     const {name,value} = e.target;
     e.preventDefault()
@@ -23,11 +24,38 @@ const Login = () => {
         [name]:value
       })
     }
-    const handleSubmit = (e) =>{
+    const handleSubmit = async(e) =>{
       e.preventDefault()
+     
       let url  = `${import.meta.env.VITE_SERVER_URL}/api/auth/${page==="Login" ? 'login':'register'}`
-      console.log(userData)
+      
+      try{
+        setLoading(true)
+        const res = await fetch(url,{
+          method:"POST",
+          headers:{
+            "Content-Type":"application/json"
+          },
+          credentials:'include',
+          body:JSON.stringify(userData)
+        })
+        const data = await res.json()
+        if(data.success){
+            setUserData(initialData)
+            toast.success(data.message)
+            dispatch(setUser(data.user))
+        }else{
+         
+          toast.error(data.message)
+        }
+      
 
+      }catch(error){
+        toast.error("Network error.")
+        
+      }finally{
+        setLoading(false)
+      }
       
     }
     const handleClick = () =>{
@@ -39,9 +67,9 @@ const Login = () => {
     }
     
   return (
-    <div className='h-screen w-full flex items-center justify-center  p-5 '>
-      <div className='lg:w-1/3 md:w-1/2 w-full p-5 rounded-xl my-shadow'>
-      <h2 className='text-center mb-5 text-3xl font-semibold text-purple-500'>
+    <div className='h-screen w-full flex items-center justify-center  p-5 bg-[#4a69bd]'>
+      <div className='lg:w-1/3 md:w-1/2 w-full p-5 rounded-xl my-shadow bg-white'>
+      <h2 className='text-center mb-5 text-3xl font-semibold text-[#4a69bd] '>
         {
           page === "Register" ? 'Create Account' : 'Login Now'
         }
@@ -61,13 +89,18 @@ const Login = () => {
             showPassword ? <FaRegEye/> :<FaRegEyeSlash/>
            }</button>
            </div>
-            <button type='submit' className='bg-purple-700 text-white rounded-full px-4 py-2 '>{page}</button>
+            <button type='submit' className='bg-[#4a69bd] hover:bg-blue-700 text-white  rounded-full px-4 py-2 relative'>
+            {page}
+              {loading && <div className='small-loader absolute right-2 bottom-2'></div> }</button>
 
 
         </form>
        <div className='flex mt-4 items-center  justify-center gap-1'>
        <p>Already have an account ? </p>
-       <button className='text-purple-500 hover:underline' onClick={handleClick}>{page==="Register" ? 'Login':'Register'}</button>
+       <button className='text-[#4a69bd] hover:underline ' onClick={handleClick}>
+        
+        {page==="Register" ? 'Login':'Register'}</button>
+
        </div>
       </div>
     </div>

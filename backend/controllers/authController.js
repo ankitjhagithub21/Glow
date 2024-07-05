@@ -6,18 +6,32 @@ const register = async (req, res) => {
     try {
         const { fullName, username, email, password } = req.body;
 
+        if(!fullName || !username || !email || !password){
+            return res.status(400).json({ success: false, message: "All fields are required." })
+        }
+
+         if(fullName.length<3 || username.length <3){
+            return res.status(400).json({ success: false, message: "Name and username must be 3 characters long." })
+         } 
+
+         if(password.length<6){
+            return res.status(400).json({ success: false, message: "password must be 6 characters long." })
+         } 
+              
+       
         // Check if the username already exists
         const existingUser = await User.findOne({ username });
 
+
         if (existingUser) {
-            return res.status(400).json({ success: false, message: "Username already taken, please choose another one or login." });
+            return res.status(400).json({ success: false, message: "Username already taken." });
         }
 
         // Check if the email already exists
         const existingEmail = await User.findOne({ email });
 
         if (existingEmail) {
-            return res.status(400).json({ success: false, message: "Email already registered, please login or use a different email." });
+            return res.status(400).json({ success: false, message: "Email already registered." });
         }
 
         // Hash the password
@@ -32,7 +46,7 @@ const register = async (req, res) => {
         });
 
         // Save the new user to the database
-        await newUser.save();
+        let user  = await newUser.save();
 
         // Generate a token
         const token = generateToken(newUser._id);
@@ -46,9 +60,11 @@ const register = async (req, res) => {
                 expires: new Date(Date.now() + 24 * 60 * 60 * 1000)
             });
         }
-
+         
+        
+          
         // Respond with success
-        res.status(201).json({ success: true, message: "Account created successfully." });
+        res.status(201).json({ success: true, message: "Account created successfully.",user });
 
     } catch (error) {
         console.error("Error during registration:", error);
@@ -61,12 +77,16 @@ const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        if(!email || !password){
+            return res.status(400).json({ success: false, message: "All fields are required." })
+        }
+
         const user = await User.findOne({ email })
         if (!user) {
             return res.status(400).json({ success: false, message: "Wrong email or password." });
         }
 
-        const comparePassword = await bcrypt.compare(password, existingEmail.password)
+        const comparePassword = await bcrypt.compare(password, user.password)
         if (!comparePassword) {
             return res.status(400).json({ success: false, message: "Wrong email or password." });
         }
@@ -81,10 +101,13 @@ const login = async (req, res) => {
             });
         }
 
+        
+        
         // Respond with success
-        res.status(200).json({ success: true, message: "Login successfull." });
+        res.status(200).json({ success: true, message: "Login successfull.",user});
 
     } catch (error) {
+       
         res.status(500).json({ success: false, message: "Internal server error." })
     }
 }
@@ -104,8 +127,6 @@ const getUser = async (req, res) => {
         if (!user) {
             return res.status(400).json({ success: false, message: "User not found" })
         }
-
-
 
         res.status(200).json({ success: true, user })
     } catch (error) {
