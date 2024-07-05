@@ -2,7 +2,7 @@ import React from 'react'
 
 const Right = () => {
   return (
-    <div>
+    <div className='md:w-[30%] lg:block hidden'>
       Right
     </div>
   )

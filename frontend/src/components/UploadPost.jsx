@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Center = () => {
+const UploadPost = () => {
   return (
     <div>
-      Center
+      Upload
     </div>
   )
 }
 
-export default Center
+export default UploadPost
