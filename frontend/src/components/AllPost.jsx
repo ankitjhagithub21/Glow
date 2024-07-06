@@ -7,6 +7,7 @@ const AllPost = () => {
   const [posts, setPosts] = useState([])
   const url = `${import.meta.env.VITE_SERVER_URL}/api`
   const [comments,setComments] = useState([])
+  const [commentLoading,setCommentLoading] = useState(false)
   const fetchAllPost = async () => {
     try {
       const res = await fetch(`${url}/post/all`, {
@@ -75,6 +76,7 @@ const AllPost = () => {
   }
   const handleAddComment = async(postId,content) =>{
     try{
+      setCommentLoading(true)
       const res = await fetch(`${url}/comment/add`,{
         method:"POST",
         headers:{
@@ -92,6 +94,8 @@ const AllPost = () => {
       }
     }catch(error){
       toast.error("Something went wrong.")
+    }finally{
+      setCommentLoading(false)
     }
   }
   const handleDeleteComment = async(postId,commentId) =>{
@@ -125,7 +129,7 @@ const AllPost = () => {
       </div>
       {
         posts.map((post) => {
-          return <Post key={post._id} post={post} handleDelete={handleDelete} handleLikeUnlike={handleLikeUnlike} handleAddComment={handleAddComment} setComments={setComments} comments={comments} handleDeleteComment={handleDeleteComment} />
+          return <Post key={post._id} post={post} handleDelete={handleDelete} commentLoading={commentLoading} handleLikeUnlike={handleLikeUnlike} handleAddComment={handleAddComment} setComments={setComments} comments={comments} handleDeleteComment={handleDeleteComment} />
         })
       }
     </div>

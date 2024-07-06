@@ -6,10 +6,11 @@ import { useSelector } from "react-redux"
 import Comment from "../components/Comment"
 
 
-const Post = ({ post, handleDelete, handleLikeUnlike, handleAddComment,comments,setComments,handleDeleteComment }) => {
+const Post = ({ post, handleDelete, handleLikeUnlike, commentLoading, handleAddComment,comments,setComments,handleDeleteComment }) => {
     const formateDate = (date) => {
         return formatDistanceToNow(new Date(date), { addSuffix: true });
     }
+    
 
     const currUser = useSelector(state => state.auth.user)
     const [showComment, setShowComment] = useState(false)
@@ -46,7 +47,7 @@ const Post = ({ post, handleDelete, handleLikeUnlike, handleAddComment,comments,
                 </div>
             </div>
             <p className='mt-2'>{post?.title}</p>
-            <img src={post.image.url} alt="post" className='h-54 my-3 rounded-lg' />
+            <img src={post.image.url} alt="post" className='h-54 my-3 rounded-lg' loading='lazy' />
             <div className='flex items-center justify-between'>
                 <button className='flex items-center gap-1' onClick={() => handleLikeUnlike(post._id)}>
                     <span className='text-lg'>{post.likes.length}</span>
@@ -78,7 +79,7 @@ const Post = ({ post, handleDelete, handleLikeUnlike, handleAddComment,comments,
 
                         }}>
 
-                            Send
+                            {commentLoading ? 'Sending...':'Send'}
                         </button>
                     </div>
                     {
