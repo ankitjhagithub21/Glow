@@ -4,7 +4,7 @@ const Loader = () => {
   return (
     <div className='bg-[#4A69BD] h-screen w-full flex gap-10 items-center justify-center'>
       <span className="loader"></span>
-      <h2 className='text-white text-2xl'>Loading...</h2>
+      <h2 className='text-white text-2xl'>Wait a minute...</h2>
     </div>
   )
 }
