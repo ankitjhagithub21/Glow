@@ -8,7 +8,7 @@ import UploadPost from '../components/UploadPost';
 
 const Home = () => {
   return (
-    <div className='container mx-auto flex h-screen'>
+    <div className='container mx-auto flex h-screen overflow-hidden'>
       <Left />
       <div className='lg:w-[50%] border-l w-full lg:border-r '>
         <Routes>
