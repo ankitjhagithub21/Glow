@@ -19,7 +19,7 @@ const Post = ({ post }) => {
                     <span className='text-sm'>{post.user.username}</span>
                 </div>
             </div>
-            <p className='mt-2'>{post.title}</p>
+            <p className='mt-2'>{post.title ? post.title : ''}</p>
             <img src={post.image.url} alt="post" className='h-54 my-3 rounded-lg' />
             <div className='flex items-center justify-between'>
                 <button>

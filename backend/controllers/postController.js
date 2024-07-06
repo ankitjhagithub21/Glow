@@ -31,11 +31,19 @@ const uploadPost = async (req, res) => {
 }
 
 const deletePost = async (req, res) => {
+    const postId = req.params.id
     try {
         const user = await User.findById(req.userId)
-        if (!user) {
+        if (!user || user.posts.indexOf(postId)==-1) {
             return res.status(401).json({ success: false, message: "Unauthorized." })
         }
+        const post = await Post.findByIdAndDelete(postId)
+
+        if(!post){
+            return res.status(404).json({success:false,message:"Post not found."})
+        }
+        res.json({success:true,message:"Post deleted."})
+
 
     } catch (error) {
         res.status(500).json({ success: false, message: "Internal Server Error." })
