@@ -2,10 +2,12 @@ import React from 'react';
 import { FaRegHeart, FaRegComment, FaRegBookmark, FaRegTrashAlt } from "react-icons/fa";
 import { LuDot } from "react-icons/lu";
 import { formatDistanceToNow } from 'date-fns';
+import {useSelector} from "react-redux"
 
-const Post = ({ post }) => {
+const Post = ({ post, handleDelete }) => {
     const formattedDate = formatDistanceToNow(new Date(post.createdAt), { addSuffix: true });
-
+    const currUser = useSelector(state=>state.auth.user)
+   
     return (
         <div className='w-full flex flex-col p-3 border-b'>
             <div className='flex items-center gap-1'>
@@ -19,7 +21,7 @@ const Post = ({ post }) => {
                     <span className='text-sm'>{post.user.username}</span>
                 </div>
             </div>
-            <p className='mt-2'>{post.title ? post.title : ''}</p>
+            <p className='mt-2'>{post?.title}</p>
             <img src={post.image.url} alt="post" className='h-54 my-3 rounded-lg' />
             <div className='flex items-center justify-between'>
                 <button>
@@ -28,9 +30,11 @@ const Post = ({ post }) => {
                 <button>
                     <FaRegComment />
                 </button>
-                <button>
+                {
+                    post.user._id === currUser._id && <button onClick={()=>handleDelete(post._id)}>
                     <FaRegTrashAlt />
-                </button>
+                </button> 
+                }
                 <button>
                     <FaRegBookmark />
                 </button>

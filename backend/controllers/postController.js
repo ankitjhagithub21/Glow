@@ -1,6 +1,7 @@
-const { uploadImage } = require("../helpers/cloudinary")
+const { uploadImage, deleteImage } = require("../helpers/cloudinary")
 const User = require("../models/user")
 const Post = require("../models/post")
+
 
 
 const uploadPost = async (req, res) => {
@@ -31,24 +32,43 @@ const uploadPost = async (req, res) => {
 }
 
 const deletePost = async (req, res) => {
-    const postId = req.params.id
+    const postId = req.params.id;
+
     try {
-        const user = await User.findById(req.userId)
-        if (!user || user.posts.indexOf(postId)==-1) {
-            return res.status(401).json({ success: false, message: "Unauthorized." })
+        const user = await User.findById(req.userId);
+
+        if (!user) {
+            return res.status(401).json({ success: false, message: "Unauthorized." });
         }
-        const post = await Post.findByIdAndDelete(postId)
 
-        if(!post){
-            return res.status(404).json({success:false,message:"Post not found."})
+        const postIndex = user.posts.indexOf(postId);
+        if (postIndex === -1) {
+            return res.status(403).json({ success: false, message: "You do not have access to delete this post." });
         }
-        res.json({success:true,message:"Post deleted."})
 
+        const post = await Post.findById(postId);
+        if (!post) {
+            return res.status(404).json({ success: false, message: "Post not found." });
+        }
 
+        await deleteImage(post.image.publicId);
+
+        // Remove the post from the user's posts array
+        user.posts.splice(postIndex, 1);
+
+        // Delete the post
+        await post.deleteOne();
+
+        // Save the user without waiting
+        await user.save();
+
+        res.json({ success: true, message: "Post deleted." });
     } catch (error) {
-        res.status(500).json({ success: false, message: "Internal Server Error." })
+        console.error(error);
+        res.status(500).json({ success: false, message: "Internal Server Error." });
     }
-}
+};
+
 
 const editPost = async (req, res) => {
     try {
