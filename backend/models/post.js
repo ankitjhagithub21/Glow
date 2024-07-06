@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
-    userId: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'User' 
@@ -10,8 +10,8 @@ const postSchema = new mongoose.Schema({
         type: String,
     },
     image: {
-        type: String,
-        required: true,
+        type:Object,
+        required:true
     },
     createdAt: {
         type: Date,
