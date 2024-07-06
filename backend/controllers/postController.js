@@ -103,9 +103,47 @@ const getAllPost = async (req, res) => {
     }
 }
 
+const likeUnlikePost = async (req, res) => {
+    const postId = req.params.id;
+    try {
+        const user = await User.findById(req.userId)
+        if (!user) {
+            return res.status(401).json({ success: false, message: "Unauthorized." })
+        }
+
+        const post = await Post.findById(postId)
+        if(!post){
+            return res.status(404).json({success:false,message:"Post not found."})
+        }
+       
+
+        const index = post.likes.indexOf(user._id)
+
+        if(index==-1){
+            post.likes.push(user._id)
+           
+        }else{
+            post.likes.splice(index,1)
+        }
+
+        await post.save();
+
+        return res.status(200).json({success:true,message:"Post like updated successfully."})
+        
+
+
+        
+
+
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Internal Server Error." })
+    }
+}
+
 module.exports = {
     uploadPost,
     deletePost,
     editPost,
-    getAllPost
+    getAllPost,
+    likeUnlikePost
 }

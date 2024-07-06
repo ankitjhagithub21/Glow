@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Post from './Post'
-
+import toast from "react-hot-toast"
 import Swal from 'sweetalert2'
 
 const AllPost = () => {
@@ -55,6 +55,23 @@ const AllPost = () => {
       console.log(error)
     }
   }
+  const handleLikeUnlike = async(postId) =>{
+      try{
+        const res = await fetch(`${url}/like/${postId}`,{
+          method:"POST",
+          credentials:'include'
+        })
+        const data = await res.json()
+        if(data.success){
+          toast.success(data.message)
+          fetchAllPost()
+        }else{
+          toast.error(data.message)
+        }
+      }catch(error){
+        toast.error("Network error.")
+      }
+  }
   useEffect(() => {
     fetchAllPost()
   }, [])
@@ -65,7 +82,7 @@ const AllPost = () => {
       </div>
       {
         posts.map((post) => {
-          return <Post key={post._id} post={post} handleDelete={handleDelete} />
+          return <Post key={post._id} post={post} handleDelete={handleDelete} handleLikeUnlike={handleLikeUnlike} />
         })
       }
     </div>

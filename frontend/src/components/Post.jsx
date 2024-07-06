@@ -4,7 +4,7 @@ import { LuDot } from "react-icons/lu";
 import { formatDistanceToNow } from 'date-fns';
 import {useSelector} from "react-redux"
 
-const Post = ({ post, handleDelete }) => {
+const Post = ({ post, handleDelete ,handleLikeUnlike}) => {
     const formattedDate = formatDistanceToNow(new Date(post.createdAt), { addSuffix: true });
     const currUser = useSelector(state=>state.auth.user)
    
@@ -18,13 +18,14 @@ const Post = ({ post, handleDelete }) => {
                         <LuDot />
                         <span>{formattedDate}</span>
                     </div>
-                    <span className='text-sm'>{post.user.username}</span>
+                    <span className='text-sm'>@{post.user.username}</span>
                 </div>
             </div>
             <p className='mt-2'>{post?.title}</p>
             <img src={post.image.url} alt="post" className='h-54 my-3 rounded-lg' />
             <div className='flex items-center justify-between'>
-                <button>
+                <button className='flex items-center gap-1' onClick={()=>handleLikeUnlike(post._id)}>
+                    <span className='text-lg'>{post.likes.length}</span>
                     <FaRegHeart />
                 </button>
                 <button>
