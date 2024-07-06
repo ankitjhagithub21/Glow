@@ -24,6 +24,7 @@ const uploadPost = async (req, res) => {
         user.posts.push(newPost)
         await Promise.all([newPost.save(), user.save()])
 
+
         return res.status(201).json({ success: true, message: "Post created successfully." })
 
 
@@ -144,6 +145,17 @@ const likeUnlikePost = async (req, res) => {
         res.status(500).json({ success: false, message: "Internal Server Error." })
     }
 }
+const getUserPost = async(req,res) =>{
+    try{
+        const userId = req.params.id;
+        const posts = await Post.find({user:userId})
+       
+     res.json({success:true,posts})
+
+    }catch(error){
+        res.status(500).json({success:false,message:"Internal server error."})
+    }
+}
 
 
 
@@ -152,5 +164,6 @@ module.exports = {
     deletePost,
     editPost,
     getAllPost,
-    likeUnlikePost
+    likeUnlikePost,
+    getUserPost
 }
