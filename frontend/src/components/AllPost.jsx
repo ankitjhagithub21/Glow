@@ -5,10 +5,11 @@ import Swal from 'sweetalert2'
 
 const AllPost = () => {
   const [posts, setPosts] = useState([])
-  const url = `${import.meta.env.VITE_SERVER_URL}/api/post`
+  const url = `${import.meta.env.VITE_SERVER_URL}/api`
+  const [comments,setComments] = useState([])
   const fetchAllPost = async () => {
     try {
-      const res = await fetch(`${url}/all`, {
+      const res = await fetch(`${url}/post/all`, {
         credentials: 'include'
       })
       const data = await res.json()
@@ -34,7 +35,7 @@ const AllPost = () => {
       })
 
       if(result.isConfirmed){
-        const res = await fetch(`${url}/delete/${postId}`, {
+        const res = await fetch(`${url}/post/delete/${postId}`, {
           method: "DELETE",
           credentials: 'include'
         })
@@ -57,7 +58,7 @@ const AllPost = () => {
   }
   const handleLikeUnlike = async(postId) =>{
       try{
-        const res = await fetch(`${url}/like/${postId}`,{
+        const res = await fetch(`${url}/post/like/${postId}`,{
           method:"POST",
           credentials:'include'
         })
@@ -72,6 +73,48 @@ const AllPost = () => {
         toast.error("Network error.")
       }
   }
+  const handleAddComment = async(postId,content) =>{
+    try{
+      const res = await fetch(`${url}/comment/add`,{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        credentials:'include',
+        body:JSON.stringify({postId,content})
+      })
+      const data = await res.json()
+
+      if(data.success){
+        toast.success(data.message)
+       setComments(prev=>[data.comment,...prev])
+        
+      }
+    }catch(error){
+      toast.error("Something went wrong.")
+    }
+  }
+  const handleDeleteComment = async(postId,commentId) =>{
+    try{
+      const res = await fetch(`${url}/comment/${commentId}/post/${postId}`,{
+        method:"DELETE",
+        credentials:'include',
+        
+      })
+      const data = await res.json()
+
+      if(data.success){
+        toast.success(data.message)
+        const updatedComments = comments.filter((comment)=>comment._id != commentId)
+       setComments(updatedComments)
+        
+      }else{
+        toast.error(data.message)
+      }
+    }catch(error){
+      toast.error("Something went wrong.")
+    }
+  }
   useEffect(() => {
     fetchAllPost()
   }, [])
@@ -82,7 +125,7 @@ const AllPost = () => {
       </div>
       {
         posts.map((post) => {
-          return <Post key={post._id} post={post} handleDelete={handleDelete} handleLikeUnlike={handleLikeUnlike} />
+          return <Post key={post._id} post={post} handleDelete={handleDelete} handleLikeUnlike={handleLikeUnlike} handleAddComment={handleAddComment} setComments={setComments} comments={comments} handleDeleteComment={handleDeleteComment} />
         })
       }
     </div>

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-
+import {useNavigate} from "react-router-dom"
 const UploadPost = () => {
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (!image) {
@@ -49,6 +50,7 @@ const UploadPost = () => {
         toast.success(data.message)
         setTitle('')
         setImage(null)
+        navigate("/")
       }else{
         toast.error(data.message)
       }

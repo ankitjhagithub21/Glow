@@ -1,6 +1,7 @@
 const { uploadImage, deleteImage } = require("../helpers/cloudinary")
 const User = require("../models/user")
 const Post = require("../models/post")
+const Comment = require("../models/comment")
 
 
 
@@ -61,7 +62,8 @@ const deletePost = async (req, res) => {
 
         // Save the user without waiting
         await user.save();
-
+         
+        await Comment.deleteMany({post:post._id})
         res.json({ success: true, message: "Post deleted." });
     } catch (error) {
         console.error(error);
@@ -88,11 +90,14 @@ const getAllPost = async (req, res) => {
             return res.status(401).json({ success: false, message: "Unauthorized." })
         }
 
+
+
         const posts = await Post.find({}).populate(
             {
                 path: 'user',
                 select: '-password'
-            }
+            },
+           
         ).sort({ createdAt: -1 });
 
         res.json({success:true,posts})
@@ -139,6 +144,8 @@ const likeUnlikePost = async (req, res) => {
         res.status(500).json({ success: false, message: "Internal Server Error." })
     }
 }
+
+
 
 module.exports = {
     uploadPost,
