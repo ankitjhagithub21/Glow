@@ -56,7 +56,7 @@ const Post = ({ post, handleDelete, handleLikeUnlike, handleAddComment,comments,
                     fetchComments()
                     setShowComment(!showComment)
                 }} className='flex items-center gap-1'>
-                    <span className='text-lg'>{post.comments.length}</span>
+                    <span className='text-lg'>{comments.length}</span>
                     <FaRegComment />
                 </button>
                 {
@@ -82,7 +82,7 @@ const Post = ({ post, handleDelete, handleLikeUnlike, handleAddComment,comments,
                         </button>
                     </div>
                     {
-                        post.comments.length > 0 && comments.map((comment) => {
+                        comments.length > 0 && comments.map((comment) => {
                             return <Comment key={comment._id} postId = {post._id} comment={comment} formateDate={formateDate} handleDeleteComment={handleDeleteComment} />
                         })
                     }
