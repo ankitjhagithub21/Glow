@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FaRegHeart, FaRegComment, FaRegBookmark, FaRegTrashAlt } from "react-icons/fa";
 import { LuDot } from "react-icons/lu";
-import { formatDistanceToNow } from 'date-fns';
 import { useSelector } from "react-redux"
 import Comment from "../components/Comment"
+import formateDate from '../helpers/formateDate';
 
 
 const Post = ({ post, handleDelete, handleLikeUnlike, commentLoading, handleAddComment,comments,setComments,handleDeleteComment }) => {
-    const formateDate = (date) => {
-        return formatDistanceToNow(new Date(date), { addSuffix: true });
-    }
+   
     
 
     const currUser = useSelector(state => state.auth.user)
@@ -47,7 +45,7 @@ const Post = ({ post, handleDelete, handleLikeUnlike, commentLoading, handleAddC
                 </div>
             </div>
             <p className='mt-2'>{post?.title}</p>
-            <img src={post.image.url} alt="post" className='h-54 my-3 rounded-lg' loading='lazy' />
+            <img src={post.image.url} alt="post" className='max-h-96 my-3 object-cover rounded-lg' loading='lazy' />
             <div className='flex items-center justify-between'>
                 <button className='flex items-center gap-1' onClick={() => handleLikeUnlike(post._id)}>
                     <span className='text-lg'>{post.likes.length}</span>
@@ -84,7 +82,7 @@ const Post = ({ post, handleDelete, handleLikeUnlike, commentLoading, handleAddC
                     </div>
                     {
                         comments.length > 0 && comments.map((comment) => {
-                            return <Comment key={comment._id} postId = {post._id} comment={comment} formateDate={formateDate} handleDeleteComment={handleDeleteComment} />
+                            return <Comment key={comment._id} postId = {post._id} comment={comment} handleDeleteComment={handleDeleteComment} />
                         })
                     }
                 </div>

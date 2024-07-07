@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react'
 import Post from './Post'
 import toast from "react-hot-toast"
 import Swal from 'sweetalert2'
+import Loader from './Loader'
 
 const AllPost = () => {
   const [posts, setPosts] = useState([])
   const url = `${import.meta.env.VITE_SERVER_URL}/api`
   const [comments,setComments] = useState([])
   const [commentLoading,setCommentLoading] = useState(false)
+  const [loading,setLoading] = useState(false)
   const fetchAllPost = async () => {
     try {
       const res = await fetch(`${url}/post/all`, {
@@ -36,12 +38,14 @@ const AllPost = () => {
       })
 
       if(result.isConfirmed){
+        setLoading(true)
         const res = await fetch(`${url}/post/delete/${postId}`, {
           method: "DELETE",
           credentials: 'include'
         })
         const data = await res.json()
         if (data.success) {
+          setLoading(false)
           Swal.fire({
             title: "Deleted!",
             text: "Your post has been deleted.",
@@ -122,6 +126,9 @@ const AllPost = () => {
   useEffect(() => {
     fetchAllPost()
   }, [])
+  if(loading){
+    return <Loader/>
+  }
   return (
     <div className='flex flex-col overflow-y-scroll h-full pb-10'>
       <div className='flex items-center justify-center p-3 border-b bg-gray-100'>

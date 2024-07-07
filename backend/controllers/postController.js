@@ -148,7 +148,8 @@ const likeUnlikePost = async (req, res) => {
 const getUserPost = async(req,res) =>{
     try{
         const userId = req.params.id;
-        const posts = await Post.find({user:userId})
+        const posts = await Post.find({ user: userId })
+        .populate({ path: 'user', select: '-password' });
        
      res.json({success:true,posts})
 

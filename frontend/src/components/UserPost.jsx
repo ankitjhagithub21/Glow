@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { setCurrPost, setIsOpen } from '../redux/slices/postSlice'
 
 const UserPost = () => {
     const user = useSelector(state=>state.auth.user)
     const [posts,setPosts] = useState([])
+    const dispatch = useDispatch()
     useEffect(()=>{
         const fetchUserPost = async() =>{
             try{
@@ -18,12 +20,16 @@ const UserPost = () => {
         }
         fetchUserPost()
     },[])
+  
   return (
-    <div className='flex w-full mt-3 p-2'>
+    <div className='flex flex-wrap w-full mt-3 p-2'>
       {
         posts.length > 0 && posts.map((post)=>{
-            return <div key={post._id} className='w-1/3 p-1'>
-                <img src={post.image.url} alt="photo" className='rounded-lg'/>
+            return <div key={post._id} className='md:w-1/3 w-1/2 p-1 cursor-pointer' onClick={()=>{
+              dispatch(setCurrPost(post))
+              dispatch(setIsOpen(true))
+            }}>
+                <img src={post.image.url} alt="photo" className='rounded-lg h-32  w-full object-cover object-center '/>
 
             </div>
         }) 

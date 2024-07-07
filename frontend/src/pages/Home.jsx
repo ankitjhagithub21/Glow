@@ -5,12 +5,19 @@ import Right from '../components/Right';
 import Profile from '../components/Profile';
 import AllPost from '../components/AllPost';
 import UploadPost from '../components/UploadPost';
+import CurrPost from '../components/CurrPost';
+import { useSelector } from 'react-redux';
 
 const Home = () => {
+  const {isOpen,currPost} = useSelector(state=>state.post)
   return (
     <div className='container mx-auto flex h-screen overflow-hidden'>
       <Left />
+     
       <div className='lg:w-[50%] border-l w-full lg:border-r  '>
+        {
+            isOpen && currPost && <CurrPost/>
+        }
         <Routes>
           <Route path="/" element={<AllPost />} />
           <Route path="/profile" element={<Profile />} />
