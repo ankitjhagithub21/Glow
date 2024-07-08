@@ -45,7 +45,7 @@ const Profile = () => {
         <div className='flex mt-32 w-full items-center justify-around'>
           <h2>{user.following.length} following</h2>
 
-          <img src={user.profileImg} alt={user.fullName} className='md:w-28 w-20 rounded-full object-contain ' />
+          <img src={user.profileImg} alt={user.fullName} className='md:w-28 w-20 rounded-full object-contain' />
 
 
           <h2>{user.followers.length} followers</h2>
@@ -60,11 +60,11 @@ const Profile = () => {
       <div className='flex flex-wrap w-full mt-3 p-2'>
         {
           user.posts.length > 0 && user.posts.map((post) => {
-            return <div key={post._id} className='md:w-1/3 w-1/2 p-1 cursor-pointer' onClick={() => {
+            return <div key={post._id} className='md:w-1/3 w-1/2 p-2 cursor-pointer' onClick={() => {
               dispatch(setCurrPost(post))
               dispatch(setIsOpen(true))
             }}>
-              <img src={post.image.url} alt="photo" className='rounded-lg h-32  w-full object-cover object-center ' />
+              <img src={post.image.url} alt="photo" className='rounded-lg h-32  w-full object-cover object-center hover:scale-110 z-0' />
 
             </div>
           })

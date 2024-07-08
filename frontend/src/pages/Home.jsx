@@ -7,6 +7,8 @@ import AllPost from '../components/AllPost';
 import UploadPost from '../components/UploadPost';
 import CurrPost from '../components/CurrPost';
 import { useSelector } from 'react-redux';
+import OtherUsers from '../components/OtherUsers';
+import Explore from '../components/Explore';
 
 const Home = () => {
   const {isOpen,currPost} = useSelector(state=>state.post)
@@ -22,6 +24,7 @@ const Home = () => {
           <Route path="/" element={<AllPost />} />
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/upload" element={<UploadPost />} />
+          <Route path="/explore" element={<Explore />} />
         </Routes>
       </div>
       <Right />

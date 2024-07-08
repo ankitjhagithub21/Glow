@@ -9,7 +9,7 @@ const CurrPost = () => {
     const currPost = useSelector(state => state.post.currPost)
     const dispatch = useDispatch()
     return (
-        <div className='h-screen w-full  flex flex-col items-center justify-center fixed top-0 left-0 p-5 '>
+        <div className='h-screen w-full z-50 flex flex-col items-center justify-center fixed top-0 left-0 p-5 '>
             <div className='lg:w-1/2 w-full bg-white h-full overflow-y-auto relative  flex flex-col gap-3 justify-center rounded-xl p-3 shadow-xl'>
                 <button className=' p-1 rounded-full  absolute  top-1 right-1 hover:bg-gray-100' onClick={() => {
 

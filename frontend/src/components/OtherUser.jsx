@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-const OtherUser = ({ user, fetchOtherUsers }) => {
+const OtherUser = ({ user }) => {
     const navigate = useNavigate()
     const currUser = useSelector(state => state.auth.user)
 
@@ -13,7 +13,7 @@ const OtherUser = ({ user, fetchOtherUsers }) => {
             })
             const data = await res.json()
             if (data.success) {
-                fetchOtherUsers()
+                window.location.reload()
             }
         } catch (error) {
             console.log(error)

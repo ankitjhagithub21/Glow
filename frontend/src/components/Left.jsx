@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { CiHome, CiUser, CiLogout, CiImageOn } from "react-icons/ci";
+import { CiHome, CiUser, CiLogout, CiImageOn, CiSearch } from "react-icons/ci";
 import toast from "react-hot-toast"
 import {useDispatch, useSelector} from "react-redux"
 import {setUser} from "../redux/slices/authSlice"
@@ -17,6 +17,11 @@ const Left = () => {
       name: "Upload Post",
       icon: <CiImageOn />,
       path: "/upload"
+    },
+    {
+      name: "Explore",
+      icon: <CiSearch />,
+      path: "/explore"
     },
     {
       name: "Profile",
@@ -51,7 +56,7 @@ const Left = () => {
       <div className='flex flex-col gap-5 md:p-5 p-2'>
         {
           links.map((link, idx) => {
-            return <Link key={idx} to={link.path} className='flex gap-2 w-full  items-center justify-start bg-gray-100 md:px-4 px-2 py-2 rounded-full hover:bg-gray-300'>
+            return <Link key={idx} to={link.path} className={`${idx=== 2 && 'md:hidden'} flex gap-2 w-full  items-center justify-start bg-gray-100 md:px-4 px-2 py-2 rounded-full hover:bg-gray-300`}>
 
              <div className='text-2xl'>
              {link.icon}

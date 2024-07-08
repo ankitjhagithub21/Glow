@@ -11,6 +11,7 @@ export const userSlice = createSlice({
     setOtherUsers: (state, action) => {
       state.otherUsers = action.payload
     }
+   
   },
 })
 

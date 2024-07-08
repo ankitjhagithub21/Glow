@@ -13,8 +13,9 @@ const OtherUsers = () => {
         })
         const data = await res.json()
         if(data.success){
-         dispatch(setOtherUsers(data.otherUsers))
            
+          dispatch(setOtherUsers(data.otherUsers))
+         
         }
       }catch(error){
         console.log(error)
@@ -28,7 +29,7 @@ const OtherUsers = () => {
     <div className='flex flex-col mt-5'>
       {
         otherUsers.map((user)=>{
-            return <OtherUser key={user._id} user={user} fetchOtherUsers={fetchOtherUsers}/>
+            return <OtherUser key={user._id} user={user} />
         })
       }
     </div>
