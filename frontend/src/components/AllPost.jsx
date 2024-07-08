@@ -12,6 +12,7 @@ const AllPost = () => {
   const [loading,setLoading] = useState(false)
   const fetchAllPost = async () => {
     try {
+      setLoading(true)
       const res = await fetch(`${url}/post/all`, {
         credentials: 'include'
       })
@@ -22,6 +23,8 @@ const AllPost = () => {
 
     } catch (error) {
       console.log(error)
+    }finally{
+      setLoading(false)
     }
   }
   const handleDelete = async (postId) => {

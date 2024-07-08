@@ -48,7 +48,7 @@ const UploadPost = () => {
       const data = await res.json();
       if (data.success) {
         Swal.fire({
-          position: "top-end",
+          position: "top-center",
           icon: "success",
           title: `${data.message}`,
           showConfirmButton: false,
