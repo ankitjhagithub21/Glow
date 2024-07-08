@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { FaRegEye,FaRegEyeSlash } from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
-import { setPage, setUser } from '../redux/slices/authSlice';
+import { setPage} from '../redux/slices/authSlice';
 import toast from 'react-hot-toast';
+import { setCurrUser } from '../redux/slices/userSlice';
 const Login = () => {
   const {page} = useSelector((state)=>state.auth)
   
@@ -43,7 +44,7 @@ const Login = () => {
         if(data.success){
             setUserData(initialData)
             toast.success(data.message)
-            dispatch(setUser(data.user))
+            dispatch(setCurrUser(data.user))
         }else{
          
           toast.error(data.message)

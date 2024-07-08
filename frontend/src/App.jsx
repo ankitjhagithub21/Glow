@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import useFetchUser from './hooks/useFetchUser';
 
 const App = () => {
-  const user = useSelector(state => state.auth.user);
+  const {currUser} = useSelector(state => state.user);
   const loading = useFetchUser();
 
   if (loading) {
@@ -20,7 +20,7 @@ const App = () => {
     <>
       <Toaster />
       {
-        user ? 
+        currUser ? 
         <BrowserRouter>
           <Routes>
             <Route path='/*' element={<Home />} />

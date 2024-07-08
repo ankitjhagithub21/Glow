@@ -1,11 +1,13 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { followUnfollowUser } from '../redux/slices/userSlice'
+import toast from 'react-hot-toast'
 
 const OtherUser = ({ user }) => {
     const navigate = useNavigate()
-    const currUser = useSelector(state => state.auth.user)
-
+    const {currUser} = useSelector(state => state.user)
+    const dispatch = useDispatch()
     const handleFollow = async () => {
         try {
             const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/user/follow/${user._id}`, {
@@ -13,14 +15,13 @@ const OtherUser = ({ user }) => {
             })
             const data = await res.json()
             if (data.success) {
-                window.location.reload()
+                toast.success(data.message)
+                dispatch(followUnfollowUser(user._id))
             }
         } catch (error) {
             console.log(error)
         }
     }
-
-    
 
     const isFollowing = currUser.following.includes(user._id)
 

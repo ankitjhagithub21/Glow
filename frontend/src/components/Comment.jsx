@@ -3,7 +3,7 @@ import {LuDot} from "react-icons/lu"
 import { useSelector } from 'react-redux'
 import formateDate from '../helpers/formateDate'
 const Comment = ({comment,handleDeleteComment,postId}) => {
-    const currUser = useSelector(state=>state.auth.user)
+    const {currUser} = useSelector(state=>state.user)
     
     return (
         <div className='p-2 flex items-start gap-2 my-1'>

@@ -87,20 +87,28 @@ const followUnfollowUser = async (req, res) => {
         if(index==-1){
             followingUser.following.push(followedUser._id)
             followedUser.followers.push(followingUser._id)
+            await Promise.all([followingUser.save(),followedUser.save()])
+            res.status(200).json({
+                success:true,
+                message:`You are now following ${followedUser.username}.`
+            })
+    
         }else{
             followingUser.following.splice(index,1)
             const followingUserIndex =  followedUser.followers.indexOf(followingUser._id)
             if(followingUserIndex!=-1){
                 followedUser.followers.splice(followingUserIndex,1)
             }
+            await Promise.all([followingUser.save(),followedUser.save()])
+            res.status(200).json({
+                success:true,
+                message:`You are unfollowed ${followedUser.username}.`
+            })
         }
 
-        await Promise.all([followingUser.save(),followedUser.save()])
+     
 
-        res.status(200).json({
-            success:true
-        })
-
+       
     } catch (error) {
         res.status(500).json({
             success: false,

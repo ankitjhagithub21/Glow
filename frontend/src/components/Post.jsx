@@ -7,7 +7,7 @@ import formateDate from '../helpers/formateDate';
 import toast from 'react-hot-toast';
 
 const Post = ({ post, handleDelete, handleLikeUnlike }) => {
-    const currUser = useSelector(state => state.auth.user);
+    const {currUser} = useSelector(state => state.user);
     const [showComment, setShowComment] = useState(false);
     const [content, setContent] = useState('');
     const [comments, setComments] = useState([]);

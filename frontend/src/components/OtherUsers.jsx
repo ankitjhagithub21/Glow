@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import OtherUser from './OtherUser'
 import { useDispatch, useSelector } from 'react-redux'
 import { setOtherUsers } from '../redux/slices/userSlice'
+import Search from './Search'
 
 const OtherUsers = () => {
    const dispatch = useDispatch()
@@ -26,7 +27,8 @@ const OtherUsers = () => {
         fetchOtherUsers()
     },[])
   return (
-    <div className='flex flex-col mt-5'>
+    <div className='flex flex-col'>
+      <Search/>
       {
         otherUsers.map((user)=>{
             return <OtherUser key={user._id} user={user} />

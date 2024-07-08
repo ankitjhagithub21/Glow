@@ -7,7 +7,6 @@ import AllPost from '../components/AllPost';
 import UploadPost from '../components/UploadPost';
 import CurrPost from '../components/CurrPost';
 import { useSelector } from 'react-redux';
-import OtherUsers from '../components/OtherUsers';
 import Explore from '../components/Explore';
 
 const Home = () => {
