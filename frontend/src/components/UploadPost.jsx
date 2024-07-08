@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
-
+import Swal from 'sweetalert2'
 const UploadPost = () => {
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
@@ -47,7 +47,13 @@ const UploadPost = () => {
 
       const data = await res.json();
       if (data.success) {
-        toast.success(data.message);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `${data.message}`,
+          showConfirmButton: false,
+          timer: 1500
+        });
         setTitle('');
         setImage(null);
         navigate("/");
