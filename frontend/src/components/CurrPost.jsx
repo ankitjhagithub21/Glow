@@ -1,10 +1,10 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCurrPost, setIsOpen } from '../redux/slices/postSlice'
-
 import {IoIosClose} from "react-icons/io"
 import { LuDot } from 'react-icons/lu'
 import formateDate from '../helpers/formateDate'
+
 const CurrPost = () => {
     const currPost = useSelector(state => state.post.currPost)
     const dispatch = useDispatch()

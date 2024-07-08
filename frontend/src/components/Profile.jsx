@@ -1,9 +1,44 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import UserPost from './UserPost'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import Loader from './Loader'
+import { useDispatch } from 'react-redux'
+import { setCurrPost, setIsOpen } from '../redux/slices/postSlice'
+
 
 const Profile = () => {
-  const user = useSelector(state => state.auth.user)
+  const { id } = useParams()
+  const dispatch = useDispatch()
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/auth/user/${id}`)
+        const data = await res.json()
+        if (data.success) {
+          setUser(data.user)
+
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchUser()
+  }, [id])
+  
+
+  if (loading) {
+    return <Loader />
+  }
+  if (!user) {
+    return <div className='flex items-center justify-center h-full '>
+      <h1 className='text-2xl'>User not found.</h1>
+    </div>
+  }
   return (
     <div className='flex flex-col'>
       <div className='h-44 w-full bg-gray-100 border-b flex items-center justify-center'>
@@ -22,7 +57,19 @@ const Profile = () => {
         <h2 className='text-2xl font-bold'>{user.fullName}</h2>
         <p className='lg:w-1/2 w-full text-sm'>{user.bio}</p>
       </div>
-      <UserPost/>
+      <div className='flex flex-wrap w-full mt-3 p-2'>
+        {
+          user.posts.length > 0 && user.posts.map((post) => {
+            return <div key={post._id} className='md:w-1/3 w-1/2 p-1 cursor-pointer' onClick={() => {
+              dispatch(setCurrPost(post))
+              dispatch(setIsOpen(true))
+            }}>
+              <img src={post.image.url} alt="photo" className='rounded-lg h-32  w-full object-cover object-center ' />
+
+            </div>
+          })
+        }
+      </div>
     </div>
   )
 }

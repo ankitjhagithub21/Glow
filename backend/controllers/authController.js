@@ -6,19 +6,19 @@ const register = async (req, res) => {
     try {
         const { fullName, username, email, password } = req.body;
 
-        if(!fullName || !username || !email || !password){
+        if (!fullName || !username || !email || !password) {
             return res.status(400).json({ success: false, message: "All fields are required." })
         }
 
-         if(fullName.length<3 || username.length <3){
+        if (fullName.length < 3 || username.length < 3) {
             return res.status(400).json({ success: false, message: "Name and username must be 3 characters long." })
-         } 
+        }
 
-         if(password.length<6){
+        if (password.length < 6) {
             return res.status(400).json({ success: false, message: "password must be 6 characters long." })
-         } 
-              
-       
+        }
+
+
         // Check if the username already exists
         const existingUser = await User.findOne({ username });
 
@@ -46,7 +46,7 @@ const register = async (req, res) => {
         });
 
         // Save the new user to the database
-        let user  = await newUser.save();
+        let user = await newUser.save();
 
         // Generate a token
         const token = generateToken(newUser._id);
@@ -60,13 +60,13 @@ const register = async (req, res) => {
                 expires: new Date(Date.now() + 24 * 60 * 60 * 1000)
             });
         }
-         
-        
+
+
         const userWithoutPassword = user.toObject();
         delete userWithoutPassword.password;
 
-        
-        res.status(201).json({ success: true, message: "Account created successfully.",user:userWithoutPassword });
+
+        res.status(201).json({ success: true, message: "Account created successfully.", user: userWithoutPassword });
 
     } catch (error) {
         console.error("Error during registration:", error);
@@ -119,20 +119,21 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
     try {
-        res.cookie('jwt', '', { 
-            httpOnly: true, 
-            secure: true, 
-            sameSite: 'none', 
-            expires: new Date(0) 
+        res.cookie('jwt', '', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            expires: new Date(0)
         });
-        
-       
-       res.status(200).json({ success: true, message: "Logout successfull." })
+
+
+        res.status(200).json({ success: true, message: "Logout successfull." })
     } catch (error) {
         console.log(error)
         res.status(500).json({ success: false, message: "Internal server error." })
     }
 }
+
 const getUser = async (req, res) => {
     try {
         const user = await User.findById(req.userId).select("-password")
@@ -142,14 +143,55 @@ const getUser = async (req, res) => {
 
         res.status(200).json({ success: true, user })
     } catch (error) {
-        
+
         res.status(500).json({ success: false, message: "Internal server error." })
     }
 }
+
+const getUserProfile = async (req, res) => {
+    try {
+
+
+        const user = await User.findById(req.params.id)
+            .select("-password")
+            .populate([
+                {
+                    path: "posts",
+                    select: "createdAt image",
+                    populate: {
+                        path: "user",
+                        select: "fullName username profileImg"
+                    }
+                }
+            ]);
+
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "user not found."
+            })
+        }
+
+        res.status(200).json({
+            success: true,
+            user
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Internal server error."
+        })
+    }
+}
+
 
 module.exports = {
     register,
     login,
     logout,
-    getUser
+    getUser,
+    getUserProfile
+
 }

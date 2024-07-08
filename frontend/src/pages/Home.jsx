@@ -20,7 +20,7 @@ const Home = () => {
         }
         <Routes>
           <Route path="/" element={<AllPost />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:id" element={<Profile />} />
           <Route path="/upload" element={<UploadPost />} />
         </Routes>
       </div>

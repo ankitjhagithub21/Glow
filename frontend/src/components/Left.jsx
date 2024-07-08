@@ -2,10 +2,11 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { CiHome, CiUser, CiLogout, CiImageOn } from "react-icons/ci";
 import toast from "react-hot-toast"
-import {useDispatch} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 import {setUser} from "../redux/slices/authSlice"
 
 const Left = () => {
+  const user = useSelector(state=>state.auth.user)
   const links = [
     {
       name: "Home",
@@ -20,10 +21,11 @@ const Left = () => {
     {
       name: "Profile",
       icon: <CiUser />,
-      path: "/profile"
+      path: `${`/profile/${user._id}`}`
     },
 
   ]
+
   const dispatch = useDispatch()
   const handleLogout = async() =>{
     try{
@@ -43,7 +45,7 @@ const Left = () => {
   return (
     <div className='h-full flex flex-col items-center justify-center lg:w-[20%] w-fit'>
       <div className='flex  items-center gap-1 mb-10 md:mb-0'>
-      <img src="./logo.png" alt=""  width={30}/>
+      <img src="/logo.png" alt=""  width={30}/>
       <h1 className='text-3xl font-bold lg:block hidden'>LOW</h1>
       </div>
       <div className='flex flex-col gap-5 md:p-5 p-2'>
