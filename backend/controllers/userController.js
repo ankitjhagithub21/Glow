@@ -65,7 +65,41 @@ const getOtherUsers = async (req, res) => {
 
 const followUnfollowUser = async (req, res) => {
     try {
+        const followingUser = await User.findById(req.userId)
+       
+        
+        if(!followingUser){
+            return res.status(401).json({
+                success:false,
+                message:"You are not authorized."
+            })
+        }
+        const followedUser = await User.findById(req.params.id)
+        
+        if(!followedUser){
+            return res.status(404).json({
+                success:false,
+                message:"User not found.."
+            })
+        }
+        const index =  followingUser.following.indexOf(followedUser._id)
 
+        if(index==-1){
+            followingUser.following.push(followedUser._id)
+            followedUser.followers.push(followingUser._id)
+        }else{
+            followingUser.following.splice(index,1)
+            const followingUserIndex =  followedUser.followers.indexOf(followingUser._id)
+            if(followingUserIndex!=-1){
+                followedUser.followers.splice(followingUserIndex,1)
+            }
+        }
+
+        await Promise.all([followingUser.save(),followedUser.save()])
+
+        res.status(200).json({
+            success:true
+        })
 
     } catch (error) {
         res.status(500).json({
