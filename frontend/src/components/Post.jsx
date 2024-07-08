@@ -11,6 +11,7 @@ const Post = ({ post, handleDelete, handleLikeUnlike }) => {
     const [showComment, setShowComment] = useState(false);
     const [content, setContent] = useState('');
     const [comments, setComments] = useState([]);
+    const [commentCount,setCommentCount] = useState(post?.comments.length)
     const [commentLoading, setCommentLoading] = useState(false);
 
     useEffect(() => {
@@ -49,6 +50,7 @@ const Post = ({ post, handleDelete, handleLikeUnlike }) => {
             if (data.success) {
                 toast.success(data.message);
                 setComments([...comments, data.comment]);
+                setCommentCount(commentCount+1)
                 setContent('');
             } else {
                 toast.error(data.message);
@@ -70,6 +72,7 @@ const Post = ({ post, handleDelete, handleLikeUnlike }) => {
             if (data.success) {
                 toast.success(data.message);
                 setComments(comments.filter(comment => comment._id !== commentId));
+                setCommentCount(commentCount-1)
             } else {
                 toast.error(data.message);
             }
@@ -99,7 +102,7 @@ const Post = ({ post, handleDelete, handleLikeUnlike }) => {
                     <FaRegHeart />
                 </button>
                 <button onClick={() => setShowComment(!showComment)} className='flex items-center gap-1 '>
-                    <span className='text-lg'>{comments.length}</span>
+                    <span className='text-lg'>{commentCount}</span>
                     <FaRegComment />
                 </button >
                 {
