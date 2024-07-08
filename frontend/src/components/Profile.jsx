@@ -14,7 +14,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/auth/user/${id}`)
+        const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/user/profile/${id}`)
         const data = await res.json()
         if (data.success) {
           setUser(data.user)

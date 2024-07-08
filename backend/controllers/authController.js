@@ -148,50 +148,12 @@ const getUser = async (req, res) => {
     }
 }
 
-const getUserProfile = async (req, res) => {
-    try {
-
-
-        const user = await User.findById(req.params.id)
-            .select("-password")
-            .populate([
-                {
-                    path: "posts",
-                    select: "createdAt image",
-                    populate: {
-                        path: "user",
-                        select: "fullName username profileImg"
-                    }
-                }
-            ]);
-
-
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                message: "user not found."
-            })
-        }
-
-        res.status(200).json({
-            success: true,
-            user
-        })
-
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Internal server error."
-        })
-    }
-}
 
 
 module.exports = {
     register,
     login,
     logout,
-    getUser,
-    getUserProfile
+    getUser
 
 }

@@ -6,6 +6,7 @@ const connectDb = require('./db/conn')
 const authRouter = require('./routes/authRoutes')
 const postRouter = require('./routes/postRoutes')
 const commentRouter = require('./routes/commentRoutes')
+const userRouter = require('./routes/userRoutes')
 
 
 const app = express()
@@ -25,6 +26,7 @@ app.use(cookieParser())
 app.use("/api/auth",authRouter)
 app.use("/api/post",postRouter)
 app.use("/api/comment",commentRouter)
+app.use("/api/user",userRouter)
 
 app.get('/', (req, res) => {
   res.send('Hello World!')

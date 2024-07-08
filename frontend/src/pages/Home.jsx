@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 const Home = () => {
   const {isOpen,currPost} = useSelector(state=>state.post)
   return (
-    <div className='container mx-auto flex h-screen overflow-hidden'>
+    <div className='lg:w-[90%] w-full mx-auto flex h-screen overflow-hidden'>
       <Left />
      
       <div className='lg:w-[50%] border-l w-full lg:border-r  '>

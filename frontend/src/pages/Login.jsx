@@ -26,7 +26,7 @@ const Login = () => {
     }
     const handleSubmit = async(e) =>{
       e.preventDefault()
-     
+      if(userData.username.includes(' ')) return toast.error("Username should not contain any space.")
       let url  = `${import.meta.env.VITE_SERVER_URL}/api/auth/${page==="Login" ? 'login':'register'}`
       
       try{
