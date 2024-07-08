@@ -1,35 +1,82 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaRegHeart, FaRegComment, FaRegBookmark, FaRegTrashAlt } from "react-icons/fa";
 import { LuDot } from "react-icons/lu";
-import { useSelector } from "react-redux"
-import Comment from "../components/Comment"
+import { useSelector } from "react-redux";
+import Comment from "../components/Comment";
 import formateDate from '../helpers/formateDate';
+import toast from 'react-hot-toast';
 
+const Post = ({ post, handleDelete, handleLikeUnlike }) => {
+    const currUser = useSelector(state => state.auth.user);
+    const [showComment, setShowComment] = useState(false);
+    const [content, setContent] = useState('');
+    const [comments, setComments] = useState([]);
+    const [commentLoading, setCommentLoading] = useState(false);
 
-const Post = ({ post, handleDelete, handleLikeUnlike, commentLoading, handleAddComment,comments,setComments,handleDeleteComment }) => {
-   
-    
+    useEffect(() => {
+        if (showComment) {
+            fetchComments();
+        }
+    }, [showComment]);
 
-    const currUser = useSelector(state => state.auth.user)
-    const [showComment, setShowComment] = useState(false)
-    const [content, setContent] = useState('')
-    
     const fetchComments = async () => {
         try {
             const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/comment/${post._id}`, {
                 credentials: 'include'
-            })
-            const data = await res.json()
+            });
+            const data = await res.json();
             if (data.success) {
-
-                setComments(data.comments)
+                setComments(data.comments);
             }
-
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    }
+    };
 
+    const handleAddComment = async (postId, content) => {
+        if (!content.trim()) return;
+        setCommentLoading(true);
+        try {
+            const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/comment/add`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: 'include',
+                body: JSON.stringify({ postId, content })
+            });
+            const data = await res.json();
+            if (data.success) {
+                toast.success(data.message);
+                setComments([...comments, data.comment]);
+                setContent('');
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            toast.error("Something went wrong.");
+        } finally {
+            setCommentLoading(false);
+        }
+    };
+
+    const handleDeleteComment = async (postId, commentId) => {
+        try {
+            const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/comment/${commentId}/post/${postId}`, {
+                method: "DELETE",
+                credentials: 'include'
+            });
+            const data = await res.json();
+            if (data.success) {
+                toast.success(data.message);
+                setComments(comments.filter(comment => comment._id !== commentId));
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            toast.error("Something went wrong.");
+        }
+    };
 
     return (
         <div className='w-full flex flex-col p-3 border-b'>
@@ -51,10 +98,7 @@ const Post = ({ post, handleDelete, handleLikeUnlike, commentLoading, handleAddC
                     <span className='text-lg'>{post.likes.length}</span>
                     <FaRegHeart />
                 </button>
-                <button onClick={() => {
-                    fetchComments()
-                    setShowComment(!showComment)
-                }} className='flex items-center gap-1'>
+                <button onClick={() => setShowComment(!showComment)} className='flex items-center gap-1'>
                     <span className='text-lg'>{comments.length}</span>
                     <FaRegComment />
                 </button>
@@ -70,25 +114,36 @@ const Post = ({ post, handleDelete, handleLikeUnlike, commentLoading, handleAddC
             {
                 showComment && <div className='flex flex-col mt-2'>
                     <div className='flex items-center border rounded-full px-1 py-1'>
-                        <input type="text" className='w-full bg-transparent pl-3' value={content} onChange={(e) => setContent(e.target.value)} placeholder='Leave a comment...' required />
-                        <button type='submit' className='bg-green-500 rounded-full text-white py-2 px-4 text-sm flex items-center justify-center' onClick={() => {
-                            setContent('')
-                            handleAddComment(post._id, content)
-
-                        }}>
-
-                            {commentLoading ? 'Sending...':'Send'}
+                        <input
+                            type="text"
+                            className='w-full bg-transparent pl-3'
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)}
+                            placeholder='Leave a comment...'
+                            required
+                        />
+                        <button
+                            type='submit'
+                            className='bg-green-500 rounded-full text-white py-2 px-4 text-sm flex items-center justify-center'
+                            onClick={() => handleAddComment(post._id, content)}
+                        >
+                            {commentLoading ? 'Sending...' : 'Send'}
                         </button>
                     </div>
                     {
-                        comments.length > 0 && comments.map((comment) => {
-                            return <Comment key={comment._id} postId = {post._id} comment={comment} handleDeleteComment={handleDeleteComment} />
-                        })
+                        comments.length > 0 && comments.map((comment) => (
+                            <Comment
+                                key={comment._id}
+                                postId={post._id}
+                                comment={comment}
+                                handleDeleteComment={handleDeleteComment}
+                            />
+                        ))
                     }
                 </div>
             }
         </div>
     );
-}
+};
 
 export default Post;

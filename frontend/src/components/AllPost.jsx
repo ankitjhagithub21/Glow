@@ -7,8 +7,8 @@ import Loader from './Loader'
 const AllPost = () => {
   const [posts, setPosts] = useState([])
   const url = `${import.meta.env.VITE_SERVER_URL}/api`
-  const [comments,setComments] = useState([])
-  const [commentLoading,setCommentLoading] = useState(false)
+  
+  
   const [loading,setLoading] = useState(false)
   const fetchAllPost = async () => {
     try {
@@ -78,51 +78,7 @@ const AllPost = () => {
         toast.error("Network error.")
       }
   }
-  const handleAddComment = async(postId,content) =>{
-    try{
-      setCommentLoading(true)
-      const res = await fetch(`${url}/comment/add`,{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        credentials:'include',
-        body:JSON.stringify({postId,content})
-      })
-      const data = await res.json()
-
-      if(data.success){
-        toast.success(data.message)
-       setComments(prev=>[data.comment,...prev])
-        
-      }
-    }catch(error){
-      toast.error("Something went wrong.")
-    }finally{
-      setCommentLoading(false)
-    }
-  }
-  const handleDeleteComment = async(postId,commentId) =>{
-    try{
-      const res = await fetch(`${url}/comment/${commentId}/post/${postId}`,{
-        method:"DELETE",
-        credentials:'include',
-        
-      })
-      const data = await res.json()
-
-      if(data.success){
-        toast.success(data.message)
-        const updatedComments = comments.filter((comment)=>comment._id != commentId)
-       setComments(updatedComments)
-        
-      }else{
-        toast.error(data.message)
-      }
-    }catch(error){
-      toast.error("Something went wrong.")
-    }
-  }
+ 
   useEffect(() => {
     fetchAllPost()
   }, [])
@@ -136,7 +92,7 @@ const AllPost = () => {
       </div>
       {
         posts.map((post) => {
-          return <Post key={post._id} post={post} handleDelete={handleDelete} commentLoading={commentLoading} handleLikeUnlike={handleLikeUnlike} handleAddComment={handleAddComment} setComments={setComments} comments={comments} handleDeleteComment={handleDeleteComment} />
+          return <Post key={post._id} post={post} handleDelete={handleDelete} handleLikeUnlike={handleLikeUnlike} />
         })
       }
     </div>
