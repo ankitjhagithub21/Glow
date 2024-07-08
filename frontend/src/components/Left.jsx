@@ -42,9 +42,9 @@ const Left = () => {
   }
   return (
     <div className='h-full flex flex-col items-center justify-center lg:w-[20%] w-fit'>
-      <div className='flex  items-center gap-1'>
+      <div className='flex  items-center gap-1 mb-10 md:mb-0'>
       <img src="./logo.png" alt=""  width={30}/>
-      <h1 className='text-3xl font-bold'>LOW</h1>
+      <h1 className='text-3xl font-bold lg:block hidden'>LOW</h1>
       </div>
       <div className='flex flex-col gap-5 md:p-5 p-2'>
         {

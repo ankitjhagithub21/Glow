@@ -79,10 +79,10 @@ const Post = ({ post, handleDelete, handleLikeUnlike }) => {
     };
 
     return (
-        <div className='w-full flex flex-col p-3 border-b'>
-            <div className='flex items-center gap-1'>
+        <div className='w-full flex flex-col p-3 border-b relative'>
+            <div className='flex items-center gap-1 '>
                 <img src={post.user.profileImg} alt="user" className='w-10 rounded-full' />
-                <div className='flex flex-col items-start'>
+                <div className='flex flex-col items-start '>
                     <div className='flex items-center gap-1 text-sm'>
                         <span>{post.user.fullName}</span>
                         <LuDot />
@@ -98,12 +98,12 @@ const Post = ({ post, handleDelete, handleLikeUnlike }) => {
                     <span className='text-lg'>{post.likes.length}</span>
                     <FaRegHeart />
                 </button>
-                <button onClick={() => setShowComment(!showComment)} className='flex items-center gap-1'>
+                <button onClick={() => setShowComment(!showComment)} className='flex items-center gap-1 '>
                     <span className='text-lg'>{comments.length}</span>
                     <FaRegComment />
-                </button>
+                </button >
                 {
-                    post.user._id === currUser._id && <button onClick={() => handleDelete(post._id)}>
+                    post.user._id === currUser._id && <button className= 'text-red-500 absolute top-2 right-2' onClick={() => handleDelete(post._id)}>
                         <FaRegTrashAlt />
                     </button>
                 }
