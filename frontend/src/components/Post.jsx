@@ -6,10 +6,12 @@ import { useSelector } from "react-redux";
 import Comment from "../components/Comment";
 import formateDate from '../helpers/formateDate';
 import toast from 'react-hot-toast';
+import {useNavigate} from "react-router-dom"
 
 const Post = ({ post, handleDelete, handleLikeUnlike,savePost }) => {
     const {currUser} = useSelector(state => state.user);
     const [showComment, setShowComment] = useState(false);
+    const navigate = useNavigate()
     const [content, setContent] = useState('');
     const [comments, setComments] = useState([]);
     const [commentCount,setCommentCount] = useState(post?.comments.length)
@@ -85,7 +87,7 @@ const Post = ({ post, handleDelete, handleLikeUnlike,savePost }) => {
     return (
         <div className='w-full flex flex-col p-3 border-b relative'>
             <div className='flex items-center gap-1 '>
-                <img src={post.user.profileImg} alt="user" className='w-10 rounded-full' />
+                <img src={post.user.profileImg} alt="user" className='w-10 rounded-full cursor-pointer' onClick={()=>navigate(`/profile/${post.user._id}`)} />
                 <div className='flex flex-col items-start '>
                     <div className='flex items-center gap-1 text-sm'>
                         <span>{post.user.fullName}</span>
