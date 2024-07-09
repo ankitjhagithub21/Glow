@@ -6,6 +6,8 @@ import { setCurrPost, setIsOpen } from '../redux/slices/postSlice'
 import formateDate from '../helpers/formateDate'
 import { Link } from "react-router-dom"
 
+import Back from './Back'
+
 
 const Profile = () => {
   const { id } = useParams()
@@ -43,8 +45,8 @@ const Profile = () => {
     </div>
   }
   return (
-    <div className='flex flex-col p-5 items-center  gap-1'>
-
+    <div className='flex flex-col items-center  gap-1'>
+      <Back/>
       <img src={user.profileImg} alt="user profile image" className='w-24 border rounded-full object-contain mx-auto' />
       <h2 className='text-2xl font-bold'>{user.fullName}</h2>
       <p>{user.bio}</p>

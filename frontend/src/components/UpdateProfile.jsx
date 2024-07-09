@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import Back from './Back'
 
 const UpdateProfile = () => {
   const { currUser } = useSelector(state => state.user)
@@ -60,8 +61,9 @@ const UpdateProfile = () => {
   }
 
   return (
-    <div className='p-5 flex flex-col h-full justify-center'>
-      <h2 className='text-center text-2xl font-bold mb-5'>Update Your Profile</h2>
+    <div className='flex flex-col h-full'>
+      <Back/>
+      <h2 className='text-center text-2xl font-bold my-5'>Update Your Profile</h2>
       <form onSubmit={handleSubmit} className='flex flex-col  gap-3'>
 
         <div className='flex flex-col gap-1'>
