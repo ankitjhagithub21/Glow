@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { FaRegHeart, FaRegComment, FaRegBookmark, FaRegTrashAlt } from "react-icons/fa";
+import { FaRegHeart, FaRegComment, FaRegBookmark,FaBookmark, FaRegTrashAlt } from "react-icons/fa";
+
 import { LuDot } from "react-icons/lu";
 import { useSelector } from "react-redux";
 import Comment from "../components/Comment";
@@ -112,7 +113,9 @@ const Post = ({ post, handleDelete, handleLikeUnlike,savePost }) => {
                 }
                 <button className='flex items-center' onClick={()=>savePost(post._id)}>
                     <span className='text-lg'>{post.bookmarks.length}</span>
-                    <FaRegBookmark />
+                   {
+                    post.bookmarks.indexOf(currUser._id) != -1 ?  <FaBookmark /> : <FaRegBookmark/>
+                   }
                 </button>
             </div>
             {
