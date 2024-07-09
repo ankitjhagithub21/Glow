@@ -28,9 +28,7 @@ const UpdateProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!profileImgFile) {
-      return toast.error("Please upload profile image.")
-    }
+   
     const formData = new FormData()
 
     formData.append('fullName', fullName)
