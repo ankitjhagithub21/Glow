@@ -36,10 +36,6 @@ const userSchema = new mongoose.Schema({
         type:String,
         default:"https://cdn-icons-png.flaticon.com/512/149/149071.png"
     },
-    coverImg:{
-        type:String,
-        default:"https://upload.wikimedia.org/wikipedia/commons/b/b9/No_Cover.jpg"
-    },
     following:[
         {
             type:mongoose.Schema.Types.ObjectId,

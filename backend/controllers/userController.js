@@ -1,3 +1,4 @@
+const { uploadImage } = require("../helpers/cloudinary");
 const User = require("../models/user")
 
 
@@ -120,7 +121,7 @@ const followUnfollowUser = async (req, res) => {
 const updateProfile = async (req, res) => {
     try {
         const user = await User.findById(req.userId).select("-password");
-        const { fullName, username, bio, profileImg, coverImg } = req.body;
+       const {fullName,username,bio}  = req.body;
 
         if (!user) {
             return res.status(401).json({
@@ -144,17 +145,22 @@ const updateProfile = async (req, res) => {
             });
         }
 
+
+        //upload image on cloudinary
+       const result = await uploadImage(req.file.path)
+
+        
+          
         user.username = username;
         user.fullName = fullName;
-        user.bio = bio;
-        user.profileImg = profileImg;
-        user.coverImg = coverImg;
-
+        user.bio = bio
+        user.profileImg = result.url
+        
         await user.save();
         res.status(200).json({
             success: true,
             message: "Profile updated.",
-            user
+            
         });
 
     } catch (error) {

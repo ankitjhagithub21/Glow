@@ -95,7 +95,7 @@ const Post = ({ post, handleDelete, handleLikeUnlike }) => {
                 </div>
             </div>
             <p className='mt-2'>{post?.title}</p>
-            <img src={post.image.url} alt="post" className='h-56 my-3 object-contain rounded-lg' loading='lazy' />
+            <img src={post.image.url} alt="post" className='h-56 my-3 object-cover rounded-lg' loading='lazy' />
             <div className='flex items-center justify-between'>
                 <button className='flex items-center gap-1' onClick={() => handleLikeUnlike(post._id)}>
                     <span className='text-lg'>{post.likes.length}</span>

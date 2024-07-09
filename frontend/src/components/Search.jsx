@@ -3,7 +3,7 @@ import { CiSearch } from "react-icons/ci"
 const Search = () => {
   return (
 
-    <div className='flex items-center bg-gray-100 rounded-full px-4 py-2 '>
+    <div className='flex items-center bg-gray-100 rounded-full px-4 py-2 mb-2 '>
       <input type="text" placeholder='Search here' className='bg-transparent w-full' />
       <CiSearch size={20} />
     </div>

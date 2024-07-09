@@ -3,7 +3,7 @@ import OtherUsers from './OtherUsers'
 
 const Explore = () => {
   return (
-    <div>
+    <div className='p-3'>
       <OtherUsers/>
     </div>
   )
