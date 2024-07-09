@@ -6,7 +6,7 @@ import Comment from "../components/Comment";
 import formateDate from '../helpers/formateDate';
 import toast from 'react-hot-toast';
 
-const Post = ({ post, handleDelete, handleLikeUnlike }) => {
+const Post = ({ post, handleDelete, handleLikeUnlike,savePost }) => {
     const {currUser} = useSelector(state => state.user);
     const [showComment, setShowComment] = useState(false);
     const [content, setContent] = useState('');
@@ -110,7 +110,8 @@ const Post = ({ post, handleDelete, handleLikeUnlike }) => {
                         <FaRegTrashAlt />
                     </button>
                 }
-                <button>
+                <button className='flex items-center' onClick={()=>savePost(post._id)}>
+                    <span className='text-lg'>{post.bookmarks.length}</span>
                     <FaRegBookmark />
                 </button>
             </div>

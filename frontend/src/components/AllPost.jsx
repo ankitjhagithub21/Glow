@@ -7,8 +7,7 @@ import Loader from './Loader'
 const AllPost = () => {
   const [posts, setPosts] = useState([])
   const url = `${import.meta.env.VITE_SERVER_URL}/api`
-  
-  
+   
   const [loading,setLoading] = useState(false)
   const fetchAllPost = async () => {
     try {
@@ -81,6 +80,24 @@ const AllPost = () => {
         toast.error("Network error.")
       }
   }
+
+  const savePost = async(postId) =>{
+    try{
+      const res = await fetch(`${url}/post/save/${postId}`,{
+        method:"POST",
+        credentials:'include'
+      })
+      const data = await res.json()
+      if(data.success){
+      
+        fetchAllPost()
+      }else{
+        toast.error("Something went wrong.")
+      }
+    }catch(error){
+      toast.error("Network error.")
+    }
+}
  
   useEffect(() => {
     fetchAllPost()
@@ -95,7 +112,7 @@ const AllPost = () => {
       </div>
       {
         posts.map((post) => {
-          return <Post key={post._id} post={post} handleDelete={handleDelete} handleLikeUnlike={handleLikeUnlike} />
+          return <Post key={post._id} post={post} handleDelete={handleDelete} handleLikeUnlike={handleLikeUnlike} savePost={savePost} />
         })
       }
     </div>

@@ -1,6 +1,6 @@
 const express = require('express')
 const verifyToken = require('../middlewares/verifyToken')
-const { uploadPost, deletePost, editPost, getAllPost, likeUnlikePost, getUserPost } = require('../controllers/postController')
+const { uploadPost, deletePost, editPost, getAllPost, likeUnlikePost, getUserPost, savePost } = require('../controllers/postController')
 const upload = require('../helpers/multer')
 const postRouter = express.Router()
 
@@ -12,6 +12,7 @@ postRouter.put("/edit/:id",verifyToken,editPost)
 postRouter.get("/all",verifyToken,getAllPost)
 postRouter.post("/like/:id",verifyToken,likeUnlikePost)
 postRouter.get("/user/:id",getUserPost)
+postRouter.post("/save/:id",verifyToken,savePost)
 
 
 module.exports = postRouter

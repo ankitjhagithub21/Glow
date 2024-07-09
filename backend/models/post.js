@@ -28,7 +28,14 @@ const postSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Comment"
         }
+    ],
+    bookmarks:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"User"
+        }
     ]
+
 });
 
 const Post = mongoose.model('Post', postSchema);

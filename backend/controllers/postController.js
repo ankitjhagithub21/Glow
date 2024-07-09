@@ -158,6 +158,45 @@ const getUserPost = async(req,res) =>{
     }
 }
 
+const savePost = async(req,res) =>{
+    try{
+        const user = await User.findById(req.userId)
+        const postId = req.params.id
+        if(!user){
+            return res.status(404).json({
+                success:false,
+                message:"User not found."
+            })
+        }
+        const post = await Post.findById(postId)
+        if(!post){
+            return res.status(404).json({
+                success:false,
+                message:"Post not found."
+            })
+        }
+    const index = post.bookmarks.indexOf(user._id)
+      if(index==-1){
+            post.bookmarks.push(user._id)
+
+      }else{
+        post.bookmarks.splice(index,1)
+
+      }
+      await post.save()
+
+      res.status(200).json({
+        success:true,
+       
+    })
+      
+    }catch{
+        res.status(500).json({
+            success:false,
+            message:"Internal server error."
+        })
+    }
+}
 
 
 module.exports = {
@@ -166,5 +205,6 @@ module.exports = {
     editPost,
     getAllPost,
     likeUnlikePost,
-    getUserPost
+    getUserPost,
+    savePost
 }

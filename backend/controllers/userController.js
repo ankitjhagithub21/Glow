@@ -149,8 +149,6 @@ const updateProfile = async (req, res) => {
         //upload image on cloudinary
        const result = await uploadImage(req.file.path)
 
-        
-          
         user.username = username;
         user.fullName = fullName;
         user.bio = bio
@@ -171,6 +169,7 @@ const updateProfile = async (req, res) => {
         });
     }
 };
+
 
 
 module.exports = {
