@@ -175,22 +175,26 @@ const savePost = async(req,res) =>{
                 message:"Post not found."
             })
         }
-    const index = post.bookmarks.indexOf(user._id)
-      if(index==-1){
+    const userIndex= post.bookmarks.indexOf(user._id)
+    const postIndex = user.bookmarks.indexOf(post._id)
+      if(userIndex==-1){
             post.bookmarks.push(user._id)
-
+           
+             user.bookmarks.push(post._id)
+           
       }else{
-        post.bookmarks.splice(index,1)
-
+        post.bookmarks.splice(userIndex,1)
+        user.bookmarks.splice(postIndex,1)
       }
-      await post.save()
+      await Promise.all([user.save(),post.save()])
 
       res.status(200).json({
         success:true,
        
     })
       
-    }catch{
+    }catch(error){
+       console.log(error)
         res.status(500).json({
             success:false,
             message:"Internal server error."

@@ -10,4 +10,5 @@ userRouter.get("/profile/:id",getUserProfile)
 userRouter.get("/follow/:id",verifyToken,followUnfollowUser)
 userRouter.post("/profile/update",upload.single('profileImg'),verifyToken,updateProfile)
 
+
 module.exports = userRouter

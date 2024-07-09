@@ -136,7 +136,7 @@ const logout = async (req, res) => {
 
 const getUser = async (req, res) => {
     try {
-        const user = await User.findById(req.userId).select("-password")
+        const user = await User.findById(req.userId).select("-password").populate('bookmarks')
         if (!user) {
             return res.status(400).json({ success: false, message: "User not found" })
         }

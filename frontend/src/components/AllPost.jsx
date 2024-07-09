@@ -9,6 +9,7 @@ const AllPost = () => {
   const url = `${import.meta.env.VITE_SERVER_URL}/api`
    
   const [loading,setLoading] = useState(false)
+  
   const fetchAllPost = async () => {
     try {
       setLoading(true)
@@ -89,8 +90,8 @@ const AllPost = () => {
       })
       const data = await res.json()
       if(data.success){
-      
-        fetchAllPost()
+       fetchAllPost()
+       
       }else{
         toast.error("Something went wrong.")
       }

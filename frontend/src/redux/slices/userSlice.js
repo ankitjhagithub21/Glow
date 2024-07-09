@@ -27,6 +27,7 @@ export const userSlice = createSlice({
         state.currUser.following.push(userId)
       }
     },
+   
 
   },
 })

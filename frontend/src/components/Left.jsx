@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { CiHome, CiUser, CiLogout, CiImageOn, CiSearch } from "react-icons/ci";
+import { CiHome, CiUser, CiLogout, CiImageOn, CiSearch, CiBookmark } from "react-icons/ci";
 import toast from "react-hot-toast"
 import {useDispatch, useSelector} from "react-redux"
 import {setCurrUser} from "../redux/slices/userSlice"
@@ -27,6 +27,11 @@ const Left = () => {
       name: "Profile",
       icon: <CiUser />,
       path: `${`/profile/${user._id}`}`
+    },
+    {
+      name: "Bookmarks",
+      icon: <CiBookmark />,
+      path: `${`/bookmarks`}`
     },
 
   ]

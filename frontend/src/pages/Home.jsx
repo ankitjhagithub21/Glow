@@ -9,6 +9,7 @@ import CurrPost from '../components/CurrPost';
 import { useSelector } from 'react-redux';
 import Explore from '../components/Explore';
 import UpdateProfile from '../components/UpdateProfile';
+import BookMarks from '../components/BookMarks';
 
 const Home = () => {
   const {isOpen,currPost} = useSelector(state=>state.post)
@@ -26,6 +27,7 @@ const Home = () => {
           <Route path="/upload" element={<UploadPost />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/profile/update" element={<UpdateProfile />} />
+          <Route path="/bookmarks" element={<BookMarks />} />
         </Routes>
       </div>
       <Right />

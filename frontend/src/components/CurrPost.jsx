@@ -8,6 +8,7 @@ import formateDate from '../helpers/formateDate'
 const CurrPost = () => {
     const currPost = useSelector(state => state.post.currPost)
     const dispatch = useDispatch()
+    
     return (
         <div className='h-screen w-full z-50 flex flex-col items-center justify-center fixed top-0 left-0 p-5 '>
             <div className='lg:w-1/2 w-full bg-white h-full overflow-y-auto relative  flex flex-col gap-3 justify-center rounded-xl p-3 shadow-xl'>
@@ -18,7 +19,8 @@ const CurrPost = () => {
                 }}>
                     <IoIosClose size={25}/>
                 </button>
-                <div className='flex items-center gap-1 '>
+               {
+                  currPost.user && <div className='flex items-center gap-1 '>
                     <img src={currPost.user.profileImg} alt={currPost.user.fullName} className='w-12 rounded-full' />
                     <div className='flex flex-col'>
                         <div className='flex items-center gap-1'>
@@ -29,6 +31,7 @@ const CurrPost = () => {
                         <span>@{currPost.user.username}</span>
                     </div>
                 </div>
+               }
                 <h1>{currPost.title}</h1>
                 <img src={currPost?.image.url} alt="image" className='max-h-[60vh] object-contain rounded-lg' />
                 
