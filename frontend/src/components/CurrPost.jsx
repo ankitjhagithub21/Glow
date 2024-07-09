@@ -30,7 +30,7 @@ const CurrPost = () => {
                     </div>
                 </div>
                 <h1>{currPost.title}</h1>
-                <img src={currPost?.image.url} alt="image" className='max-h-[60vh] object-cover rounded-lg' />
+                <img src={currPost?.image.url} alt="image" className='max-h-[60vh] object-contain rounded-lg' />
                 
             </div>
 
