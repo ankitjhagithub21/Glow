@@ -8,6 +8,7 @@ import UploadPost from '../components/UploadPost';
 import CurrPost from '../components/CurrPost';
 import { useSelector } from 'react-redux';
 import Explore from '../components/Explore';
+import UpdateProfile from '../components/UpdateProfile';
 
 const Home = () => {
   const {isOpen,currPost} = useSelector(state=>state.post)
@@ -15,7 +16,7 @@ const Home = () => {
     <div className='lg:w-[90%] w-full mx-auto flex h-screen overflow-hidden'>
       <Left />
      
-      <div className='lg:w-[50%] border-l w-full lg:border-r  '>
+      <div className='lg:w-[50%] border-l w-full lg:border-r  overflow-auto '>
         {
             isOpen && currPost && <CurrPost/>
         }
@@ -24,6 +25,7 @@ const Home = () => {
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/upload" element={<UploadPost />} />
           <Route path="/explore" element={<Explore />} />
+          <Route path="/profile/update" element={<UpdateProfile />} />
         </Routes>
       </div>
       <Right />

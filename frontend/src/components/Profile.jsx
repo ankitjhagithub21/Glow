@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Loader from './Loader'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setCurrPost, setIsOpen } from '../redux/slices/postSlice'
+import formateDate from '../helpers/formateDate'
+import {Link} from "react-router-dom"
 
 
 const Profile = () => {
   const { id } = useParams()
   const dispatch = useDispatch()
   const [user, setUser] = useState(null)
+  const {currUser} = useSelector(state=>state.user)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -29,7 +32,7 @@ const Profile = () => {
 
     fetchUser()
   }, [id])
-  
+
 
   if (loading) {
     return <Loader />
@@ -41,22 +44,34 @@ const Profile = () => {
   }
   return (
     <div className='flex flex-col'>
-      <div className='h-44 w-full bg-gray-100 border-b flex items-center justify-center'>
-        <div className='flex mt-32 w-full items-center justify-around'>
-          <h2>{user.following.length} following</h2>
-
-          <img src={user.profileImg} alt={user.fullName} className='md:w-28 w-20 rounded-full object-contain' />
-
-
-          <h2>{user.followers.length} followers</h2>
-
+      <div className='flex flex-col'>
+        <div className='w-full h-56 bg-gray-100'>
+          <img src={user.coverImg} alt="user cover image" className='w-full h-full object-cover object-center' />
         </div>
-
+       
+        <img src={user.profileImg} alt="user profile image" className='w-24 -mt-12 rounded-full object-contain mx-auto' />
       </div>
-      <div className='flex flex-col text-center items-center mt-10'>
+      <div className='flex flex-col text-center items-center mt-5'>
         <h2 className='text-2xl font-bold'>{user.fullName}</h2>
         <p className='lg:w-1/2 w-full text-sm'>{user.bio}</p>
+        <div className='flex items-center justify-center gap-3'>
+       
+          <span>{user.posts.length} posts</span>
+          <span>{user.following.length} following</span>
+          <span>{user.followers.length} followers</span>
+        
+        </div>
+        <span>
+          Joined {formateDate(user.joined)}</span>
       </div>
+      <div className='bg-yellow-200 mt-2 p-2 flex items-center gap-2'>
+      {
+        currUser._id === user._id &&  <Link to={"/profile/update"} className='bg-green-500 rounded-full text-sm px-2 py-1'>Update Profile</Link>
+      }
+      
+
+      </div>
+   
       <div className='flex flex-wrap w-full mt-3 p-2'>
         {
           user.posts.length > 0 && user.posts.map((post) => {

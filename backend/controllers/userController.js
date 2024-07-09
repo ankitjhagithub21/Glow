@@ -116,8 +116,60 @@ const followUnfollowUser = async (req, res) => {
         })
     }
 }
+
+const updateProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.userId).select("-password");
+        const { fullName, username, bio, profileImg, coverImg } = req.body;
+
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: "You are not authorized."
+            });
+        }
+
+        if (!fullName || !username) {
+            return res.status(400).json({
+                success: false,
+                message: "Name and username are required."
+            });
+        }
+
+        const existingUser = await User.findOne({ username, _id: { $ne: user._id } });
+        if (existingUser) {
+            return res.status(400).json({
+                success: false,
+                message: "Username already registered."
+            });
+        }
+
+        user.username = username;
+        user.fullName = fullName;
+        user.bio = bio;
+        user.profileImg = profileImg;
+        user.coverImg = coverImg;
+
+        await user.save();
+        res.status(200).json({
+            success: true,
+            message: "Profile updated.",
+            user
+        });
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            success: false,
+            message: "Internal Server error."
+        });
+    }
+};
+
+
 module.exports = {
     getUserProfile,
     getOtherUsers,
-    followUnfollowUser
+    followUnfollowUser,
+    updateProfile
 }
